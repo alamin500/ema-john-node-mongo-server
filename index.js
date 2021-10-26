@@ -62,6 +62,7 @@ async function run() {
     await client.connect();
     const database = client.db("onlineShop");
     const productsCollection = database.collection("products");
+    const orderCollection = database.collection("orders");
 
     // Get product api
     app.get("/products", async (req, res) => {
@@ -90,6 +91,13 @@ async function run() {
       const query = { key: { $in: keys } };
       const products = await productsCollection.find(query).toArray();
       res.json(products);
+    });
+
+    // Add Orders API
+    app.post("/orders", async (req, res) => {
+      const order = req.body;
+      const result = await orderCollection.insertOne(order);
+      res.json(result);
     });
   } finally {
     // await client.close()
