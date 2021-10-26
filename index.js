@@ -67,7 +67,11 @@ async function run() {
     app.get("/products", async (req, res) => {
       const cursor = productsCollection.find({});
       const products = await cursor.toArray();
-      res.send(products);
+      const count = await cursor.count();
+      res.send({
+        count,
+        products,
+      });
     });
   } finally {
     // await client.close()
