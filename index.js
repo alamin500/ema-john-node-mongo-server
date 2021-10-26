@@ -84,6 +84,13 @@ async function run() {
         products,
       });
     });
+    // use Post to get data by keys
+    app.post("/products/bykeys", async (req, res) => {
+      const keys = req.body;
+      const query = { key: { $in: keys } };
+      const products = await productsCollection.find(query).toArray();
+      res.json(products);
+    });
   } finally {
     // await client.close()
   }
